@@ -102,6 +102,7 @@ export default class VimYankHighlightPlugin extends Plugin {
             markViewPlugin
         ) as MarkViewPlugin;
 
+        // TODO: account for visual block mode since it requires multipl disjointed highlights
         plugin.setYankText(currentYankBuffer, this.activeEditor);
 
         clearTimeout(this.timeoutHandle);
