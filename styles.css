@@ -22,6 +22,7 @@ If your plugin does not need CSS, delete this file.
     }
 }
 
+/* TODO: figure out how to get rid of the line gap */
 .ovy-highlight {
     animation: yankedHighlight 0.5s ease-out;
 }

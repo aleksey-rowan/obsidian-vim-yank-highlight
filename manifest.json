@@ -4,7 +4,7 @@
     "version": "1.0.1",
     "minAppVersion": "0.15.0",
     "description": "Highlight yanked text in Vim mode. Enjoy that subtle animation you've missed so much.",
-    "author": "Alekey Rowan",
+    "author": "Aleksey Rowan",
     "authorUrl": "https://github.com/aleksey-rowan",
     "fundingUrl": "https://www.buymeacoffee.com/alekseyrowan",
     "isDesktopOnly": true

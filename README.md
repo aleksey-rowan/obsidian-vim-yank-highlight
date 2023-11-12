@@ -1,4 +1,4 @@
-[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/gbraad)
+[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/alekseyrowan)
 
 # Obsidian Vim Yank Highlight Plugin
 
@@ -6,7 +6,9 @@ Highlight yanked text in Obsidian Vim mode with a subtle animation you've missed
 
 ## Why?
 
-The Vim mode in CodeMirror [lacks native support for highlighting yanked text](https://github.com/replit/codemirror-vim/issues/121).
+The Vim mode in CodeMirror [lacks native support for highlighting yanked text](https://github.com/replit/codemirror-vim/issues/121) and it's unlikely to be implemented.
+
+There is already a [yank highlighter plugin](https://github.com/kometenstaub/obsidian-vim-yank-highlight), but it relies on monkey-patching the vimrc code which I wanted to avoid.
 
 ## Features
 
@@ -14,18 +16,18 @@ The Vim mode in CodeMirror [lacks native support for highlighting yanked text](h
 
 ## Installation
 
-### Manual Installation
-
-1. Download the latest release from the [Releases](https://github.com/your-username/obsidian-vim-yank-highlight/releases) page.
-2. Extract the zip file into your Obsidian plugins folder.
-3. Reload Obsidian (Ctrl+Shift+R) to activate the plugin.
-
 ### Community Plugins
 
 1. Open Obsidian.
 2. Go to "Settings" > "Community plugins."
 3. Search for "Vim Yank Highlight."
 4. Click "Install" to enable the plugin.
+
+### Manual Installation
+
+1. Download the latest release from the [Releases](https://github.com/your-username/obsidian-vim-yank-highlight/releases) page.
+2. Extract the zip file into your Obsidian plugins folder.
+3. Reload Obsidian to activate the plugin.
 
 ## License
 
