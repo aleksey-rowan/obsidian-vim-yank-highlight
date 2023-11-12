@@ -9,6 +9,10 @@ const enum vimEvents {
     commanddone = "vim-command-done",
 }
 
+// TODO: option to change highlight duration
+// TODO: option to change the colour of highlight
+// TODO: option to supress in visual mode
+
 /* The `VimYankHighlightPlugin` class is a TypeScript plugin that highlights yanked text in the
 Obsidian editor when using the Vim keybindings. */
 export default class VimYankHighlightPlugin extends Plugin {

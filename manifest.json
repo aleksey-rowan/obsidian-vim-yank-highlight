@@ -1,11 +1,11 @@
 {
     "id": "obsidian-vim-yank-highlight",
-    "name": "Obsidian Vim Yank Highlight",
+    "name": "Vim Yank Highlight",
     "version": "1.0.1",
     "minAppVersion": "0.15.0",
-    "description": "Highlight yanked text seamlessly in Vim mode. Enjoy a subtle animation you've missed so much.",
+    "description": "Highlight yanked text in Vim mode. Enjoy that subtle animation you've missed so much.",
     "author": "Alekey Rowan",
-    "authorUrl": "https://obsidian.md",
-    "fundingUrl": "https://obsidian.md/pricing",
+    "authorUrl": "https://github.com/aleksey-rowan",
+    "fundingUrl": "https://www.buymeacoffee.com/alekseyrowan",
     "isDesktopOnly": true
 }
