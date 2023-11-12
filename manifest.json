@@ -1,11 +1,11 @@
 {
-    "id": "obsidian-vim-yank-highlight",
-    "name": "Obsidian Vim Yank Highlight",
-    "version": "1.0.0",
-    "minAppVersion": "0.15.0",
-    "description": "This is a sample plugin for Obsidian. This plugin demonstrates some of the capabilities of the Obsidian API.",
-    "author": "Obsidian",
-    "authorUrl": "https://obsidian.md",
-    "fundingUrl": "https://obsidian.md/pricing",
-    "isDesktopOnly": true
+	"id": "obsidian-vim-yank-highlight",
+	"name": "Obsidian Vim Yank Highlight",
+	"version": "1.0.1",
+	"minAppVersion": "0.15.0",
+	"description": "Highlight yanked text seamlessly in Vim mode. Enjoy a subtle fade-in and quick fade-out animation you've missed so much.",
+	"author": "Obsidian",
+	"authorUrl": "https://obsidian.md",
+	"fundingUrl": "https://obsidian.md/pricing",
+	"isDesktopOnly": true
 }
