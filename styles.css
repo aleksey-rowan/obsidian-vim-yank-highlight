@@ -6,3 +6,22 @@ available in the app when your plugin is enabled.
 If your plugin does not need CSS, delete this file.
 
 */
+
+@keyframes yankedHighlight {
+    0% {
+        background-color: transparent;
+    }
+    5% {
+        background-color: var(--link-unresolved-decoration-color);
+    }
+    95% {
+        background-color: var(--link-unresolved-decoration-color);
+    }
+    100% {
+        background-color: transparent;
+    }
+}
+
+.ovy-highlight {
+    animation: yankedHighlight 0.5s ease-out;
+}
