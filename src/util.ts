@@ -1,11 +1,11 @@
 /**
- * Returns the longest common substring from two provided strings.
- *
+ * The function `longestCommonSubstring` takes two strings as input and returns the longest common
+ * substring between them.
  * Adapted from https://www.geeksforgeeks.org/javascript-program-to-find-longest-common-substring-between-two-strings/
- *
- * @param str1
- * @param str2
- * @returns
+ * @param {string} str1 - The first string to compare.
+ * @param {string} str2 - The `str2` parameter is a string representing the second input string for
+ * finding the longest common substring.
+ * @returns the longest common substring between `str1` and `str2`.
  */
 export function longestCommonSubstring(str1: string, str2: string): string {
     let n = str1.length;

@@ -11,6 +11,8 @@ import {
 
 import { longestCommonSubstring } from "./util";
 
+/* The `MarkViewPlugin` class is a TypeScript class that represents a plugin for marking and
+highlighting text in an editor view. */
 export class MarkViewPlugin implements PluginValue {
     decorations: DecorationSet;
     yankText: string | null;
@@ -20,6 +22,12 @@ export class MarkViewPlugin implements PluginValue {
         this.decorations = this.buildDecorations(view);
     }
 
+    /**
+     * The `update` function updates the decorations in the editor view based on the provided
+     * `ViewUpdate` or `EditorView` object.
+     * @param {ViewUpdate | EditorView} update - The `update` parameter can be of type `ViewUpdate` or
+     * `EditorView`. It represents an update to the editor view or document.
+     */
     update(update: ViewUpdate | EditorView) {
         if (update instanceof EditorView) {
             this.decorations = this.buildDecorations(update);
@@ -91,13 +99,17 @@ export class MarkViewPlugin implements PluginValue {
     }
 
     /**
-     * Returns the position of the supplied substring in the supplied text
-     * relative to the cursor postion.
-     *
-     * @param view
-     * @param text
-     * @param substring
-     * @returns
+     * The function `getSubstringPosition` finds the position of a substring within a given text,
+     * taking into account the current cursor position.
+     * @param {EditorView} view - The `view` parameter is an instance of the `EditorView` class, which
+     * represents the current state of the editor view. It provides methods and properties to interact
+     * with the editor.
+     * @param {string} text - The `text` parameter is a string that represents the entire text content
+     * of the editor view. It is the text in which we want to find the position of a substring.
+     * @param {string} substring - The `substring` parameter is a string that represents the text you
+     * want to find within the `text` parameter. It is the portion of the `text` that you want to
+     * locate the position of.
+     * @returns the position of the closest occurrence of the substring within the given text.
      */
     private getSubstringPosition(
         view: EditorView,

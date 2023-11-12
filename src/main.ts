@@ -9,6 +9,8 @@ const enum vimEvents {
     commanddone = "vim-command-done",
 }
 
+/* The `VimYankHighlightPlugin` class is a TypeScript plugin that highlights yanked text in the
+Obsidian editor when using the Vim keybindings. */
 export default class VimYankHighlightPlugin extends Plugin {
     initialized: Boolean;
 
@@ -72,13 +74,11 @@ export default class VimYankHighlightPlugin extends Plugin {
         // Push the key to the command
         this.vimCommand.push(vimKey);
 
-        // Check if the command is done
+        // Check if the command is done;
+        // if it is, it means the current key is the last one in that command
         if (!this.vimCommandDone) {
             return;
         }
-
-        // Log the command
-        console.log("command done", this.vimCommand);
 
         if (this.vimCommand.contains("y")) {
             this.highlightYank();
@@ -88,9 +88,11 @@ export default class VimYankHighlightPlugin extends Plugin {
         this.vimCommand.splice(0, this.vimCommand.length);
     }
 
+    /**
+     * The `highlightYank()` function retrieves the yank buffer from the Vim controller, sets the yank
+     * text in the MarkView plugin, and then cleans the yank text after a delay of 0.5 seconds.
+     */
     highlightYank() {
-        console.log("yank!");
-
         const yankRegister = this.codeMirrorVimObject
             .getRegisterController()
             .getRegister("yank");
@@ -105,9 +107,14 @@ export default class VimYankHighlightPlugin extends Plugin {
         clearTimeout(this.timeoutHandle);
         this.timeoutHandle = setTimeout(() => {
             plugin.cleanYankText(this.activeEditor);
-        }, 3000);
+        }, 500);
     }
 
+    /**
+     * The function sets a boolean variable to true when a Vim command is done.
+     * @param {any} reason - The "reason" parameter is a variable that can hold any value. It is used
+     * to indicate the reason or result of the Vim command being done.
+     */
     private onVimCommandDone(reason: any) {
         this.vimCommandDone = true;
     }
