@@ -94,7 +94,7 @@ export class MarkViewPlugin implements PluginValue {
         const to = from + visibleYankText.length;
 
         builder.add(from, to, Decoration.mark({ class: "ovy-highlight" }));
-
+            
         return builder.finish();
     }
 
