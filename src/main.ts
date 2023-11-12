@@ -97,6 +97,7 @@ export default class VimYankHighlightPlugin extends Plugin {
      * text in the MarkView plugin, and then cleans the yank text after a delay of 0.5 seconds.
      */
     highlightYank() {
+        // TODO: check if it's possible to get the selected text from the selection event; it will simplify the whole thing
         const yankRegister = this.codeMirrorVimObject
             .getRegisterController()
             .getRegister("yank");
