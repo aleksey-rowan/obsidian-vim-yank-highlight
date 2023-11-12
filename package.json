@@ -1,5 +1,5 @@
 {
-    "name": "obsidian-sample-plugin",
+    "name": "vim-yank-highlight",
     "version": "1.0.2",
     "description": "Highlight yanked text in Vim mode. Enjoy that subtle animation you've missed so much.",
     "main": "main.js",
