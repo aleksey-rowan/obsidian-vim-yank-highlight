@@ -8,10 +8,10 @@
  * @returns the longest common substring between `str1` and `str2`.
  */
 export function longestCommonSubstring(str1: string, str2: string): string {
-    let n = str1.length;
-    let m = str2.length;
+    const n = str1.length;
+    const m = str2.length;
 
-    let lcs: number[][] = [];
+    const lcs: number[][] = [];
     for (let i = 0; i <= n; i++) {
         lcs[i] = [];
         for (let j = 0; j <= m; j++) {

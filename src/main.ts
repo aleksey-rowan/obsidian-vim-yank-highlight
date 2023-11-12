@@ -12,10 +12,10 @@ const enum vimEvents {
 /* The `VimYankHighlightPlugin` class is a TypeScript plugin that highlights yanked text in the
 Obsidian editor when using the Vim keybindings. */
 export default class VimYankHighlightPlugin extends Plugin {
-    initialized: Boolean;
+    initialized: boolean;
 
     vimCommand: string[] = [];
-    vimCommandDone: Boolean = false;
+    vimCommandDone = false;
 
     codeMirrorVimObject: any = null;
     timeoutHandle: NodeJS.Timeout;
@@ -116,11 +116,18 @@ export default class VimYankHighlightPlugin extends Plugin {
      * @param {any} reason - The "reason" parameter is a variable that can hold any value. It is used
      * to indicate the reason or result of the Vim command being done.
      */
-    private onVimCommandDone(reason: any) {
+    private onVimCommandDone(reason: unknown) {
         this.vimCommandDone = true;
     }
 
     action() {}
 
-    onunload() {}
+    onunload() {
+        const cmV = this.codeMirror;
+        if (!cmV) {
+            return;
+        }
+        cmV.off<any>(vimEvents.keypress, this.onVimKeypress.bind(this));
+        cmV.off<any>(vimEvents.commanddone, this.onVimCommandDone.bind(this));
+    }
 }
