@@ -12,7 +12,7 @@ Highlight yanked text in Obsidian Vim mode with a subtle animation you've missed
 
 The Vim mode in CodeMirror [lacks native support for highlighting yanked text](https://github.com/replit/codemirror-vim/issues/121) and it's unlikely to be implemented.
 
-There is already a [yank highlighter plugin](https://github.com/kometenstaub/obsidian-vim-yank-highlight), but it relies on monkey-patching the vimrc code which I wanted to avoid.
+There is already a [yank highlighter plugin](https://github.com/kometenstaub/obsidian-vim-yank-highlight), but it relies on monkey-patching the `codemirror-vim` code which I wanted to avoid.
 
 ## Features
 
