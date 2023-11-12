@@ -4,6 +4,8 @@
 
 Highlight yanked text in Obsidian Vim mode with a subtle animation you've missed so much.
 
+![](assets/demo.gif)
+
 ## Why?
 
 The Vim mode in CodeMirror [lacks native support for highlighting yanked text](https://github.com/replit/codemirror-vim/issues/121) and it's unlikely to be implemented.
