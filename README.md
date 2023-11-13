@@ -4,7 +4,9 @@
 
 Highlight yanked text in Obsidian Vim mode with a subtle animation you've missed so much.
 
-![](assets/demo.gif)
+<p align="center">
+  <img src="./assets/demo.gif" style="width: 80%" />
+</p>
 
 ## Why?
 
