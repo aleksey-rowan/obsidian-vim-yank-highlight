@@ -13,6 +13,22 @@ const enum vimEvents {
 // TODO: option to change the colour of highlight
 // TODO: option to supress in visual mode
 
+declare global {
+    interface Window {
+        CodeMirrorAdapter: {
+            Vim: Vim;
+        };
+    }
+}
+
+interface Vim {
+    getRegisterController(): RegisterController;
+}
+
+interface RegisterController {
+    getRegister(name: string): { keyBuffer: string[] };
+}
+
 /* The `VimYankHighlightPlugin` class is a TypeScript plugin that highlights yanked text in the
 Obsidian editor when using the Vim keybindings. */
 export default class VimYankHighlightPlugin extends Plugin {
@@ -21,16 +37,20 @@ export default class VimYankHighlightPlugin extends Plugin {
     vimCommand: string[] = [];
     vimCommandDone = false;
 
-    codeMirrorVimObject: any = null;
-    timeoutHandle: NodeJS.Timeout;
+    codeMirrorVimObject: Vim;
+    timeoutHandle: number;
 
     private get activeView(): MarkdownView | null {
         return this.app.workspace.getActiveViewOfType(MarkdownView);
     }
 
-    private get activeEditor(): EditorView {
-        return (</* { editor?: { cm: EditorView } } */ any>this.activeView!)
-            .editor.cm;
+    /**
+     * Returns the CodeMirror instance of the active editor view.
+     * @returns an object of type `EditorView` or `undefined`.
+     */
+    private get activeEditorView(): EditorView | undefined {
+        return (<{ editor?: { cm: EditorView } }>this.activeView?.leaf.view)
+            .editor?.cm;
     }
 
     // CodeMirror editor from the active view
@@ -52,10 +72,8 @@ export default class VimYankHighlightPlugin extends Plugin {
     }
 
     private initialize() {
-        console.log("init");
-
         if (this.activeView && this.codeMirror) {
-            this.codeMirrorVimObject = (window as any).CodeMirrorAdapter?.Vim;
+            this.codeMirrorVimObject = window.CodeMirrorAdapter?.Vim;
 
             const cmV = this.codeMirror;
 
@@ -103,16 +121,21 @@ export default class VimYankHighlightPlugin extends Plugin {
             .getRegister("yank");
         const currentYankBuffer: string = yankRegister.keyBuffer[0];
 
-        const plugin = this.activeEditor.plugin(
+        if (!this.activeEditorView) {
+            return;
+        }
+
+        const plugin = this.activeEditorView.plugin(
             markViewPlugin
         ) as MarkViewPlugin;
 
         // TODO: account for visual block mode since it requires multipl disjointed highlights
-        plugin.setYankText(currentYankBuffer, this.activeEditor);
+        plugin.setYankText(currentYankBuffer, this.activeEditorView);
 
+        const timeoutEditorView = this.activeEditorView;
         clearTimeout(this.timeoutHandle);
-        this.timeoutHandle = setTimeout(() => {
-            plugin.cleanYankText(this.activeEditor);
+        this.timeoutHandle = window.setTimeout(() => {
+            plugin.cleanYankText(timeoutEditorView);
         }, 500);
     }
 

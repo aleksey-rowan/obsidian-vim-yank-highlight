@@ -56,6 +56,13 @@ export class MarkViewPlugin implements PluginValue {
 
     destroy() {}
 
+    /* one idea is to at each line break wrap the first character on the line into
+    a separate test decoration mark that doesn't do anything. Then to query all the marks
+    and get the height of the line from the test mark and apply the needed padding
+    to the following marks up until the next test mark. This will ensure that
+    different lines that might have differnet heights (like headers and what not)
+    have proper padding on them. */
+
     buildDecorations(view: EditorView): DecorationSet {
         const builder = new RangeSetBuilder<Decoration>();
 
