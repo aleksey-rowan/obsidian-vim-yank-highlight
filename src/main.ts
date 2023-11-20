@@ -3,31 +3,11 @@ import { MarkdownView, Plugin } from "obsidian";
 import { EditorView } from "@codemirror/view";
 
 import { MarkViewPlugin, markViewPlugin } from "./markViewPlugin";
-
-const enum vimEvents {
-    keypress = "vim-keypress",
-    commanddone = "vim-command-done",
-}
+import { Vim, MarkdownViewExtended, vimEvents } from "./types";
 
 // TODO: option to change highlight duration
 // TODO: option to change the colour of highlight
 // TODO: option to supress in visual mode
-
-declare global {
-    interface Window {
-        CodeMirrorAdapter: {
-            Vim: Vim;
-        };
-    }
-}
-
-interface Vim {
-    getRegisterController(): RegisterController;
-}
-
-interface RegisterController {
-    getRegister(name: string): { keyBuffer: string[] };
-}
 
 /* The `VimYankHighlightPlugin` class is a TypeScript plugin that highlights yanked text in the
 Obsidian editor when using the Vim keybindings. */
@@ -40,8 +20,10 @@ export default class VimYankHighlightPlugin extends Plugin {
     codeMirrorVimObject: Vim;
     timeoutHandle: number;
 
-    private get activeView(): MarkdownView | null {
-        return this.app.workspace.getActiveViewOfType(MarkdownView);
+    private get activeView() {
+        return this.app.workspace.getActiveViewOfType(
+            MarkdownView
+        ) as MarkdownViewExtended;
     }
 
     /**
@@ -55,8 +37,8 @@ export default class VimYankHighlightPlugin extends Plugin {
 
     // CodeMirror editor from the active view
     // the one you can set event listeners on
-    private get codeMirror(): CodeMirror.Editor | null {
-        return (this.activeView as any).editMode?.editor?.cm?.cm;
+    private get codeMirror() {
+        return this.activeView?.editMode?.editor?.cm?.cm;
     }
 
     async onload() {
@@ -64,9 +46,7 @@ export default class VimYankHighlightPlugin extends Plugin {
 
         this.registerEvent(
             this.app.workspace.on("active-leaf-change", () => {
-                if (!this.initialized) {
-                    this.initialize();
-                }
+                if (!this.initialized) this.initialize();
             })
         );
     }
@@ -77,16 +57,10 @@ export default class VimYankHighlightPlugin extends Plugin {
 
             const cmV = this.codeMirror;
 
-            cmV.off<any>(vimEvents.keypress, this.onVimKeypress.bind(this));
-            cmV.on<any>(vimEvents.keypress, this.onVimKeypress.bind(this));
-            cmV.off<any>(
-                vimEvents.commanddone,
-                this.onVimCommandDone.bind(this)
-            );
-            cmV.on<any>(
-                vimEvents.commanddone,
-                this.onVimCommandDone.bind(this)
-            );
+            cmV.off(vimEvents.keypress, this.onVimKeypress.bind(this));
+            cmV.on(vimEvents.keypress, this.onVimKeypress.bind(this));
+            cmV.off(vimEvents.commanddone, this.onVimCommandDone.bind(this));
+            cmV.on(vimEvents.commanddone, this.onVimCommandDone.bind(this));
         }
     }
 
@@ -98,9 +72,7 @@ export default class VimYankHighlightPlugin extends Plugin {
 
         // Check if the command is done;
         // if it is, it means the current key is the last one in that command
-        if (!this.vimCommandDone) {
-            return;
-        }
+        if (!this.vimCommandDone) return;
 
         if (this.vimCommand.contains("y")) {
             this.highlightYank();
@@ -121,9 +93,7 @@ export default class VimYankHighlightPlugin extends Plugin {
             .getRegister("yank");
         const currentYankBuffer: string = yankRegister.keyBuffer[0];
 
-        if (!this.activeEditorView) {
-            return;
-        }
+        if (!this.activeEditorView) return;
 
         const plugin = this.activeEditorView.plugin(
             markViewPlugin
@@ -152,10 +122,9 @@ export default class VimYankHighlightPlugin extends Plugin {
 
     onunload() {
         const cmV = this.codeMirror;
-        if (!cmV) {
-            return;
-        }
-        cmV.off<any>(vimEvents.keypress, this.onVimKeypress.bind(this));
-        cmV.off<any>(vimEvents.commanddone, this.onVimCommandDone.bind(this));
+        if (!cmV) return;
+
+        cmV.off(vimEvents.keypress, this.onVimKeypress.bind(this));
+        cmV.off(vimEvents.commanddone, this.onVimCommandDone.bind(this));
     }
 }
