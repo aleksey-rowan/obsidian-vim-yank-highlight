@@ -43,11 +43,16 @@ If your plugin does not need CSS, delete this file.
 
         🤷‍♀️
     */
-    --expected-text-height: calc(var(--line-height) * var(--font-text-size));
+    /* --expected-text-height: calc(var(--line-height) * var(--font-text-size));
     --approximate-gap-height: calc(
         (var(--expected-text-height) - var(--font-text-size)) / 4
     );
-    padding: var(--approximate-gap-height) 0;
+    padding: var(--approximate-gap-height) 0; */
 
-    animation: yankedHighlight 0.5s ease-out;
+    /* animation: yankedHighlight 0.5s ease-out; */
+    background-color: var(--link-unresolved-decoration-color);
+}
+
+.ovy-standard {
+    background-color: purple;
 }

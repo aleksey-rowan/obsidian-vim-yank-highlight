@@ -3,6 +3,7 @@ import { MarkdownView, Plugin } from "obsidian";
 import { EditorView } from "@codemirror/view";
 
 import { MarkViewPlugin, markViewPlugin } from "./markViewPlugin";
+import { pilotViewPlugin } from "./pilotViewPlugin";
 
 const enum vimEvents {
     keypress = "vim-keypress",
@@ -60,8 +61,7 @@ export default class VimYankHighlightPlugin extends Plugin {
     }
 
     async onload() {
-        this.registerEditorExtension([markViewPlugin]);
-
+        this.registerEditorExtension([markViewPlugin, pilotViewPlugin]);
         this.registerEvent(
             this.app.workspace.on("active-leaf-change", () => {
                 if (!this.initialized) {
@@ -119,15 +119,18 @@ export default class VimYankHighlightPlugin extends Plugin {
         const yankRegister = this.codeMirrorVimObject
             .getRegisterController()
             .getRegister("yank");
-        const currentYankBuffer: string = yankRegister.keyBuffer[0];
+        // remove leading/trailing linebreaks from the yank buffer value
+        const currentYankBuffer: string = yankRegister.keyBuffer[0].replace(
+            /^\n+|\n+$/g,
+            ""
+        );
 
-        if (!this.activeEditorView) {
-            return;
-        }
+        if (!this.activeEditorView) return;
 
-        const plugin = this.activeEditorView.plugin(
-            markViewPlugin
-        ) as MarkViewPlugin;
+        const plugin =
+            this.activeEditorView.plugin<MarkViewPlugin>(markViewPlugin);
+
+        if (!plugin) return;
 
         // TODO: account for visual block mode since it requires multipl disjointed highlights
         plugin.setYankText(currentYankBuffer, this.activeEditorView);
@@ -135,7 +138,7 @@ export default class VimYankHighlightPlugin extends Plugin {
         const timeoutEditorView = this.activeEditorView;
         clearTimeout(this.timeoutHandle);
         this.timeoutHandle = window.setTimeout(() => {
-            plugin.cleanYankText(timeoutEditorView);
+            //plugin.cleanYankText(timeoutEditorView);
         }, 500);
     }
 

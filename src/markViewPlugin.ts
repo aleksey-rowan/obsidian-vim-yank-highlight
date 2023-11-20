@@ -10,6 +10,7 @@ import {
 } from "@codemirror/view";
 
 import { longestCommonSubstring } from "./util";
+import { PilotViewPlugin, pilotViewPlugin } from "./pilotViewPlugin";
 
 /* The `MarkViewPlugin` class is a TypeScript class that represents a plugin for marking and
 highlighting text in an editor view. */
@@ -66,6 +67,7 @@ export class MarkViewPlugin implements PluginValue {
     buildDecorations(view: EditorView): DecorationSet {
         const builder = new RangeSetBuilder<Decoration>();
 
+        // reset the cursor head
         this.cursorHead = null;
 
         // if there's no yank text or the document is empty,
@@ -96,11 +98,67 @@ export class MarkViewPlugin implements PluginValue {
             visibleYankText
         );
 
+        const pilotPlugin = view.plugin<PilotViewPlugin>(pilotViewPlugin);
+        if (!pilotPlugin) return builder.finish();
+
         // the from and to indexes are relative to the viewport
         const from = viewport.from + yankPosition;
-        const to = from + visibleYankText.length;
+        // const to = from + visibleYankText.length;
 
-        builder.add(from, to, Decoration.mark({ class: "ovy-highlight" }));
+        const lineRanges = pilotPlugin.buildDecorations(
+            view,
+            visibleYankText,
+            from
+        );
+        // oh boy, if this `buildDecorations` function is called during a proper update
+        // like when the editor changes, calling dispatch again will crush the plugin
+        // but without updaing the pilot marks, I can't get the padding right
+        // what if I go back to a single mark plugin? no, that wouldn't work as well
+        // setting padding fully manually will be lost on the next update and would have to be recalculated
+        // hm, maybe
+        // wow, such a rabit hole
+        // view.dispatch();
+
+        const lineElements = document.querySelectorAll(
+            ".cm-line:has(.ovy-standard)"
+        );
+        if (lineElements.length !== lineRanges.length / 2)
+            return builder.finish();
+
+        // console.log(highlightLineElements.length, lineRanges.length / 2);
+
+        for (let i = 0; i < lineRanges.length; i += 2) {
+            const lineElement = lineElements[i / 2];
+            const lineHeight = parseFloat(
+                window.getComputedStyle(lineElement).lineHeight
+            );
+            const paddingValue =
+                (lineHeight -
+                    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                    lineElement
+                        .querySelector<HTMLElement>(".ovy-standard")!
+                        .getBoundingClientRect().height) /
+                2;
+
+            // console.log(
+            //     lineElement.clientHeight,
+            //     lineElement.querySelector<HTMLElement>(".ovy-standard")!
+            //         .offsetHeight
+            // );
+            const [start, end] = [lineRanges[i], lineRanges[i + 1]];
+            builder.add(
+                start,
+                end,
+                Decoration.mark({
+                    class: "ovy-highlight",
+                    attributes: {
+                        style: `padding: ${paddingValue}px 0`,
+                    },
+                })
+            );
+        }
+
+        // builder.add(from, to, Decoration.mark({ class: "ovy-highlight" }));
 
         return builder.finish();
     }
