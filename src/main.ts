@@ -57,16 +57,16 @@ export default class VimYankHighlightPlugin extends Plugin {
 
             const cmV = this.codeMirror;
 
-            cmV.off(vimEvents.keypress, this.onVimKeypress.bind(this));
-            cmV.on(vimEvents.keypress, this.onVimKeypress.bind(this));
-            cmV.off(vimEvents.commanddone, this.onVimCommandDone.bind(this));
-            cmV.on(vimEvents.commanddone, this.onVimCommandDone.bind(this));
+            cmV.off(vimEvents.keypress, this.onVimKeypress);
+            cmV.on(vimEvents.keypress, this.onVimKeypress);
+            cmV.off(vimEvents.commanddone, this.onVimCommandDone);
+            cmV.on(vimEvents.commanddone, this.onVimCommandDone);
         }
     }
 
     // for some reason, done fires before keypress
     // and you need the next key after done to figure out the full command
-    private onVimKeypress(vimKey: string) {
+    private onVimKeypress = (_: unknown, vimKey: string) => {
         // Push the key to the command
         this.vimCommand.push(vimKey);
 
@@ -80,7 +80,16 @@ export default class VimYankHighlightPlugin extends Plugin {
 
         this.vimCommandDone = false;
         this.vimCommand.splice(0, this.vimCommand.length);
-    }
+    };
+
+    /**
+     * The function sets a boolean variable to true when a Vim command is done.
+     * @param {any} reason - The "reason" parameter is a variable that can hold any value. It is used
+     * to indicate the reason or result of the Vim command being done.
+     */
+    private onVimCommandDone = () => {
+        this.vimCommandDone = true;
+    };
 
     /**
      * The `highlightYank()` function retrieves the yank buffer from the Vim controller, sets the yank
@@ -109,22 +118,11 @@ export default class VimYankHighlightPlugin extends Plugin {
         }, 500);
     }
 
-    /**
-     * The function sets a boolean variable to true when a Vim command is done.
-     * @param {any} reason - The "reason" parameter is a variable that can hold any value. It is used
-     * to indicate the reason or result of the Vim command being done.
-     */
-    private onVimCommandDone(reason: unknown) {
-        this.vimCommandDone = true;
-    }
-
-    action() {}
-
     onunload() {
         const cmV = this.codeMirror;
         if (!cmV) return;
 
-        cmV.off(vimEvents.keypress, this.onVimKeypress.bind(this));
-        cmV.off(vimEvents.commanddone, this.onVimCommandDone.bind(this));
+        cmV.off(vimEvents.keypress, this.onVimKeypress);
+        cmV.off(vimEvents.commanddone, this.onVimCommandDone);
     }
 }
