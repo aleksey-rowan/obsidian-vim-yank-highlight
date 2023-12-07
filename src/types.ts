@@ -19,12 +19,14 @@ declare global {
     }
 }
 
+/* The `interface CMEditorEventMapExtended` is extending the `CMEditorEventMap` interface from the
+`codemirror` library. It adds two additional event types: `vimEvents.keypress` and
+`vimEvents.commanddone`. These events have a different signature compared to the regular events in
+`CMEditorEventMap` because they don't include the instance of the editor as the first argument. The
+extended interface specifies the event handlers for these two events. */
 interface CMEditorEventMapExtended extends CMEditorEventMap {
-    [vimEvents.keypress]: (instance: CMEditorExtended, vimkey: string) => void;
-    [vimEvents.commanddone]: (
-        instance: CMEditorExtended,
-        vimkey: string
-    ) => void;
+    [vimEvents.keypress]: (vimkey: string) => void;
+    [vimEvents.commanddone]: (vimkey: string) => void;
 }
 
 interface CMEditorExtended extends CMEditor {

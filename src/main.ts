@@ -66,7 +66,7 @@ export default class VimYankHighlightPlugin extends Plugin {
 
     // for some reason, done fires before keypress
     // and you need the next key after done to figure out the full command
-    private onVimKeypress = (_: unknown, vimKey: string) => {
+    private onVimKeypress = (vimKey: string) => {
         // Push the key to the command
         this.vimCommand.push(vimKey);
 
