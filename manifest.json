@@ -1,7 +1,7 @@
 {
 	"id": "vim-yank-highlight",
 	"name": "Vim Yank Highlight",
-	"version": "1.0.5",
+	"version": "1.0.6",
 	"minAppVersion": "0.15.0",
 	"description": "Highlight yanked text in Vim mode. Enjoy that subtle animation you've missed so much.",
 	"author": "Aleksey Rowan",
