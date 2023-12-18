@@ -79,10 +79,13 @@ export class MarkViewPlugin implements PluginValue {
         // yank will copy folded text as well and visible
         // lines filter out folded text
         const viewport: { from: number; to: number } = view.viewport;
-        const visibleText: string = view.state.sliceDoc(
-            viewport.from,
-            viewport.to
-        );
+
+        // linewise yanks always end with a linebreak which causes a problem
+        // when trying to match the very last line (an edge case, get it?)
+        // adding a linebreak to the visible text is a hack to fix that and
+        // it's easier then trying to detect and linewise yanks
+        const visibleText: string =
+            view.state.sliceDoc(viewport.from, viewport.to) + "\n";
 
         // find the longest common substring between the visible text and the yank text
         const visibleYankText = longestCommonSubstring(
@@ -112,7 +115,7 @@ export class MarkViewPlugin implements PluginValue {
      * @param {EditorView} view - The `view` parameter is an instance of the `EditorView` class, which
      * represents the current state of the editor view. It provides methods and properties to interact
      * with the editor.
-     * @param {string} text - The `text` parameter is a string that represents the entire text content
+     * @param {string} text - The `text` parameter is a string that represents the visible text content
      * of the editor view. It is the text in which we want to find the position of a substring.
      * @param {string} substring - The `substring` parameter is a string that represents the text you
      * want to find within the `text` parameter. It is the portion of the `text` that you want to
@@ -126,7 +129,10 @@ export class MarkViewPlugin implements PluginValue {
     ) {
         // store the current cursort head; it will persist until the yank is changed
         // otherwise, if the cursor moves and the document is editing, the highlight won't be accurate anymore
-        this.cursorHead = this.cursorHead || view.state.selection.main.head;
+        // subtract `viewport.from` since we are dealing only with visible lines
+        this.cursorHead =
+            this.cursorHead ||
+            view.state.selection.main.head - view.viewport.from;
 
         // find the closest location of the "visibleYankText" to the cursor
         // this help to highlight the proper yank pieces instead of other occurrences

@@ -100,7 +100,7 @@ export default class VimYankHighlightPlugin extends Plugin {
         const yankRegister = this.codeMirrorVimObject
             .getRegisterController()
             .getRegister("yank");
-        const currentYankBuffer: string = yankRegister.keyBuffer[0];
+        const currentYankBuffer = yankRegister.keyBuffer[0];
 
         if (!this.activeEditorView) return;
 
