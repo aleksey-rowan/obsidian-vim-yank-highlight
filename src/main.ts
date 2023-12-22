@@ -74,7 +74,8 @@ export default class VimYankHighlightPlugin extends Plugin {
         // if it is, it means the current key is the last one in that command
         if (!this.vimCommandDone) return;
 
-        if (this.vimCommand.contains("y")) {
+        // FIXME: implement proper yank command snooping if possible; see #3
+        if (this.vimCommand.contains("y") || this.vimCommand.contains("Y")) {
             this.highlightYank();
         }
 
