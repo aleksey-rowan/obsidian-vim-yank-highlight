@@ -22,11 +22,11 @@ export class SettingsTab extends PluginSettingTab {
 
         containerEl.empty();
 
-    new Setting(containerEl)
-        .setName("Date duration")
-        .setDesc("Duration in milliseconds for the highlights")
-        .addText((text) =>
-            text
+        new Setting(containerEl)
+            .setName("Date duration")
+            .setDesc("Duration in milliseconds for the highlights")
+            .addText((text) =>
+                text
                 .setPlaceholder("500")
                 .setValue(this.plugin.settings.highlightDuration.toString())
                 .onChange(async (durationString) => {
@@ -38,7 +38,12 @@ export class SettingsTab extends PluginSettingTab {
                     }
                     this.plugin.settings.highlightDuration = duration;
                     await this.plugin.saveSettings();
+                    const root = document.documentElement;
+                    root.style.setProperty(
+                        '--link-yanked-timeout',
+                        `${duration/1000}s`
+                    );
                 })
-        );
+            );
     }
 }

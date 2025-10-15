@@ -47,6 +47,10 @@ export default class VimYankHighlightPlugin extends Plugin {
 
     async onload() {
         await this.loadSettings()
+
+        const root = document.documentElement;
+        root.style.setProperty('--link-yanked-timeout', `${this.settings.highlightDuration/1000}s`);
+
         this.addSettingTab(new SettingsTab(this.app, this))
 
         this.registerEditorExtension([markViewPlugin]);
